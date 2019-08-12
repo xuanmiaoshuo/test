@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import a, { xuanmiao, xuanmiao2 } from './test/moduleTest'
 
 function App() {
   return (
