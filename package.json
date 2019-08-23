@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "lint-mc": "^1.1.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
@@ -11,7 +12,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier -l \"./**/*\"",
+    "prettier:fix": "prettier --write -l \"./**/*\"",
+    "prepush": "node ./node_modules/lint-mc/bin/pre-push.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,5 +31,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "**/*.{js,jsx}": [
+      "prettier --write",
+      "node ./node_modules/lint-mc/bin/pre-lint.js"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run prepush"
+    }
   }
 }
