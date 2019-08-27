@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mc/lint": "^1.2.5",
     "lint-mc": "^1.1.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -13,9 +14,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier -l \"./**/*\"",
-    "prettier:fix": "prettier --write -l \"./**/*\"",
-    "prepush": "node ./node_modules/lint-mc/bin/pre-push.js"
+    "prettier": "prettier --write -l \"./**/*\"",
+    "eslint": "eslint $(git diff --cached --diff-filter=ACMRTUXB --name-only | grep .js$)",
+    "stylelint": "stylelint **/*.{wxml,vue,css,sass,scss} --fix",
+    "prepush": "node ./node_modules/@mc/lint/bin/pre-push.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,7 +37,12 @@
   "lint-staged": {
     "**/*.{js,jsx}": [
       "prettier --write",
-      "node ./node_modules/lint-mc/bin/pre-lint.js"
+      "node ./node_modules/@mc/lint/bin/pre-lint.js",
+      "git add"
+    ],
+    "**/*.{html,vue,css,sass,scss}": [
+      "stylelint --fix",
+      "git add"
     ]
   },
   "husky": {
@@ -44,5 +51,15 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "npm run prepush"
     }
+  },
+  "stylelint": {
+    "defaultSeverity": "error",
+    "extends": [
+      "stylelint-config-standard"
+    ],
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "rules": {}
   }
 }
